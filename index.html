@@ -9,50 +9,24 @@
   :root{--navy:#1B3A5F;--gold:#C9A84C;--paper:#fbfcfe;}
   *{box-sizing:border-box;margin:0;padding:0;}
   html,body{height:100%;overflow:hidden;background:#eef2f8;font-family:'Inter',sans-serif;}
-
-  /* viewport that captures gestures */
-  #stage{
-    position:fixed;inset:0;cursor:grab;
-    background:
-      radial-gradient(1600px 900px at 50% 0%, #ffffff 0%, #f3f6fb 70%);
-    touch-action:none;
-  }
+  #stage{position:fixed;inset:0;cursor:grab;background:radial-gradient(1600px 900px at 50% 0%, #ffffff 0%, #f3f6fb 70%);touch-action:none;}
   #stage.grabbing{cursor:grabbing;}
-  #canvas{
-    position:absolute;top:0;left:0;transform-origin:0 0;
-    will-change:transform;
-  }
-
-  /* toolbar */
-  .toolbar{
-    position:fixed;top:16px;right:16px;z-index:10;display:flex;gap:8px;
-    background:#fff;border:1px solid #d6e0ee;border-radius:12px;padding:6px;
-    box-shadow:0 6px 22px rgba(27,58,95,.14);
-  }
-  .toolbar button{
-    width:42px;height:42px;border:none;background:#f4f7fc;border-radius:9px;
-    font-size:20px;color:var(--navy);cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;
-    transition:background .15s;
-  }
+  #canvas{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform;}
+  .toolbar{position:fixed;top:16px;right:16px;z-index:10;display:flex;gap:8px;background:#fff;border:1px solid #d6e0ee;border-radius:12px;padding:6px;box-shadow:0 6px 22px rgba(27,58,95,.14);}
+  .toolbar button{width:42px;height:42px;border:none;background:#f4f7fc;border-radius:9px;font-size:20px;color:var(--navy);cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;}
   .toolbar button:hover{background:var(--navy);color:#fff;}
-  .hint{
-    position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:10;
-    background:rgba(27,58,95,.9);color:#fff;font-size:13px;padding:8px 18px;border-radius:30px;
-    letter-spacing:.02em;box-shadow:0 4px 14px rgba(0,0,0,.18);
-    opacity:1;transition:opacity .6s;
-  }
+  .hint{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(27,58,95,.9);color:#fff;font-size:13px;padding:8px 18px;border-radius:30px;opacity:1;transition:opacity .6s;}
   .hint.fade{opacity:0;}
-
-  /* ===== tree styles ===== */
-  .sheet{width:2600px;padding:70px 60px 60px;}
+  .sheet{width:3400px;padding:70px 60px 60px;}
   .head{text-align:center;margin-bottom:30px;}
   .head .kicker{font-size:15px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px;}
   .head h1{font-family:'Cormorant Garamond';font-weight:700;font-size:64px;line-height:1;color:var(--navy);}
   .head .sub{font-family:'Cormorant Garamond';font-size:24px;color:#6b7a8d;margin-top:12px;font-style:italic;}
   .head .rule{width:130px;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:20px auto 0;}
-  .band{text-align:center;margin:50px 0 32px;position:relative;}
+  .band{text-align:center;margin:50px 0 14px;position:relative;}
   .band::before{content:"";position:absolute;top:50%;left:0;right:0;height:1px;background:#c4d2e3;}
   .band span{position:relative;background:var(--paper);padding:7px 28px;font-size:14px;letter-spacing:.26em;text-transform:uppercase;color:#2E5090;font-weight:600;border:1px solid #c4d2e3;border-radius:30px;}
+  .note-line{text-align:center;font-size:14px;color:#6b7a8d;font-style:italic;margin:0 0 26px;}
   .node{display:inline-flex;flex-direction:column;align-items:center;background:#fff;border:1.5px solid #c4d2e3;border-radius:11px;padding:8px 14px;min-width:96px;text-align:center;box-shadow:0 3px 11px rgba(27,58,95,.07);}
   .node .nm{font-weight:700;font-size:16px;color:var(--navy);}
   .node .sp{font-size:12px;color:#6b7a8d;margin-top:2px;font-weight:500;}
@@ -62,6 +36,9 @@
   .gc{background:#fff;border:1px solid #c4d2e3;border-radius:9px;padding:6px 11px;min-width:80px;text-align:center;box-shadow:0 2px 7px rgba(27,58,95,.05);}
   .gc .nm{font-weight:700;font-size:13.5px;color:var(--navy);}
   .gc .sp{font-size:11px;color:#6b7a8d;margin-top:1px;}
+  .g2{background:#fff;border:1.5px solid #b8c8de;border-radius:10px;padding:7px 13px;min-width:90px;text-align:center;box-shadow:0 3px 9px rgba(27,58,95,.06);}
+  .g2 .nm{font-weight:700;font-size:15px;color:var(--navy);}
+  .g2 .sp{font-size:11.5px;color:#6b7a8d;margin-top:1px;}
   .kids{font-size:11px;color:#6b7a8d;margin-top:5px;line-height:1.4;max-width:150px;}
   .col{display:flex;flex-direction:column;align-items:center;}
   .vbar{width:2px;height:16px;background:#c4d2e3;}
@@ -70,287 +47,237 @@
   .gc-row{display:flex;gap:10px;justify-content:center;flex-wrap:nowrap;align-items:flex-start;}
   .clanhdr{display:flex;flex-direction:column;align-items:center;margin-bottom:4px;}
   .origin{font-size:13px;color:#6b7a8d;margin:6px 0 14px;font-style:italic;}
-  .union{border:1.5px dashed var(--gold);border-radius:14px;background:linear-gradient(180deg,#fffdf6,#fff);padding:15px 30px;text-align:center;max-width:820px;margin:0 auto;}
-  .union .tag{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:5px;}
-  .union .pair{font-family:'Cormorant Garamond';font-size:27px;font-weight:700;color:var(--navy);}
-  .union .pair .heart{color:#c0392b;font-size:20px;margin:0 8px;}
-  .union .note{font-size:13px;color:#6b7a8d;margin-top:4px;font-style:italic;}
   .gen-wrap{display:flex;flex-direction:column;align-items:center;margin-top:4px;}
+  .cross{display:inline-block;background:#fffdf6;border:1px solid var(--gold);color:#9a7d2e;font-size:11px;padding:2px 9px;border-radius:20px;margin-top:4px;font-weight:600;}
+  .couple{display:flex;align-items:flex-start;gap:0;}
+  .couple .spouse{background:#fff;border:1.5px dashed #c9b06a;border-radius:11px;padding:7px 13px;min-width:84px;text-align:center;box-shadow:0 2px 8px rgba(201,168,76,.12);}
+  .couple .spouse .nm{font-weight:700;font-size:14px;color:#7a6320;}
+  .couple .spouse .sp{font-size:10.5px;color:#9a8546;margin-top:1px;}
+  .couple .link{width:30px;height:2px;background:#c9b06a;margin-top:18px;}
+  .marrow{display:flex;flex-direction:column;align-items:center;}
   .footer{text-align:center;margin-top:56px;font-family:'Cormorant Garamond';font-style:italic;font-size:24px;color:#2E5090;}
   .footer .mark{color:var(--gold);font-size:28px;margin-bottom:6px;}
+
+  .box{background:#fff;border:1.5px solid #c4d2e3;border-radius:10px;padding:7px 13px;min-width:90px;text-align:center;box-shadow:0 3px 9px rgba(27,58,95,.06);}
+  .box .nm{font-weight:700;font-size:15px;color:var(--navy);}
+  .box .sp{font-size:11.5px;color:#6b7a8d;margin-top:1px;}
+  .box-row{display:flex;gap:12px;justify-content:center;flex-wrap:nowrap;align-items:flex-start;}
 </style>
 </head>
 <body>
-
-<div class="toolbar">
-  <button id="zin" title="Aproximar">+</button>
-  <button id="zout" title="Afastar">−</button>
-  <button id="reset" title="Ajustar à tela">⤢</button>
-</div>
+<div class="toolbar"><button id="zin">+</button><button id="zout">&minus;</button><button id="reset">&#10530;</button></div>
 <div class="hint" id="hint">Use o scroll/pinça para zoom · arraste para mover</div>
+<div id="stage"><div id="canvas"><div class="sheet" id="sheet">
 
-<div id="stage">
-  <div id="canvas">
-    <div class="sheet" id="sheet">
+  <div class="head">
+    <div class="kicker">Golombek &nbsp;·&nbsp; Zaclis</div>
+    <h1>A Árvore da Família</h1>
+    <div class="sub">De duas origens, uma só família — quatro gerações de coragem, amor e sorte.</div>
+    <div class="rule"></div>
+  </div>
 
-      <div class="head">
-        <div class="kicker">Golombek &nbsp;·&nbsp; Zaclis</div>
-        <h1>A Árvore da Família</h1>
-        <div class="sub">De duas origens, uma só família — quatro gerações de coragem, amor e sorte.</div>
-        <div class="rule"></div>
-      </div>
+  <div class="band"><span>Os Golombek · Polônia</span></div>
+  <div class="note-line">Sigmundo casou com Anna (Aninha) Safir, filha de Sofia Zaclis · Mariazinha casou com Tobias Zaclis — os dois laços entre as famílias</div>
+  <div class="gen-wrap">
+    <div class="clanhdr"><div class="node root"><div class="nm">Henrique &amp; Cecília</div><div class="sp">alfaiate · Lipowicz</div></div></div>
+    <div class="origin">Łódź → Bom Retiro, São Paulo</div>
+    <div class="vbar"></div><div class="hbar" style="width:2200px;"></div>
+    <div class="children-row" style="gap:40px;">
 
-      <div class="band"><span>Os Golombek · Polônia</span></div>
-      <div class="gen-wrap">
-        <div class="clanhdr"><div class="node root"><div class="nm">Henrique &amp; Cecília</div><div class="sp">alfaiate · Lipowicz</div></div></div>
-        <div class="origin">Łódź → Bom Retiro, São Paulo</div>
-        <div class="vbar"></div><div class="hbar" style="width:560px;"></div>
-        <div class="children-row">
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Sigmundo (Sig)</div><div class="sp">1923 · = Anna Safir</div></div><div class="kids">Milton · Marlene · Mário<br>(ver 1º casamento)</div></div>
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Mariazinha</div><div class="sp">= Tobias Zaclis</div></div><div class="kids">Cecília · Ruth · Silvia · Denise<br>(ver 2º casamento)</div></div>
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Rafael</div><div class="sp">= Anna Dobromil</div></div>
-            <div class="vbar"></div><div class="hbar" style="width:300px;"></div>
-            <div class="children-row" style="gap:14px;">
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Fábio</div><div class="sp">= Liz</div></div><div class="kids">Anna Cecilia · Sarah Sofia</div></div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Cláudio Henrique</div><div class="sp">≠ Mariana</div></div><div class="kids">Rebeca · Rodrigo</div></div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Vivian</div><div class="sp">≠ Joel</div></div><div class="kids">Arthur</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="band"><span>Os Zaclis · Bessarábia</span></div>
-      <div class="gen-wrap">
-        <div class="clanhdr"><div class="node root"><div class="nm">Codish &amp; Haika</div><div class="sp">sapateiro · "Carlos &amp; Clara"</div></div></div>
-        <div class="origin">Teleneşti → Bom Retiro, São Paulo</div>
-        <div class="vbar"></div><div class="hbar" style="width:2050px;"></div>
-        <div class="children-row" style="gap:34px;align-items:flex-start;">
-
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Sofia</div><div class="sp">1911–1992</div></div>
-            <div class="vbar"></div><div class="hbar" style="width:240px;"></div>
-            <div class="children-row" style="gap:14px;">
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Anna</div><div class="sp">= Sigmundo G.</div></div><div class="kids">Milton · Marlene · Mário<br>(1º casamento)</div></div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Martinico</div><div class="sp">= Flora</div></div><div class="kids">André Carlos · Sérgio Paulo · Flávio Roberto · Ana Lúcia (Xuxa)</div></div>
-            </div>
-          </div>
-
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">José</div><div class="sp">1917–1983 · = Léa</div></div>
-            <div class="vbar"></div>
-            <div class="children-row"><div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Rubens</div></div><div class="kids">Lídia</div></div></div>
-          </div>
-
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Waldemar</div><div class="sp">1918–2004 · = Idinha</div></div>
-            <div class="vbar"></div><div class="hbar" style="width:520px;"></div>
-            <div class="children-row" style="gap:14px;">
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Lionel</div><div class="sp">= Denise</div></div>
-                <div class="vbar"></div><div class="hbar" style="width:150px;"></div>
-                <div class="gc-row">
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Cynthia</div><div class="sp">= Uri</div></div><div class="kids">Eduardo · Gustavo · Tamara</div></div>
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Shelly</div><div class="sp">= Sérgio</div></div><div class="kids">Felipe · Camila</div></div>
+      <div class="col"><div class="vbar"></div>
+        <div class="couple">
+          <div class="marrow">
+            <div class="spouse"><div class="nm">Anna Safir</div><div class="sp">1º casamento</div></div>
+            <div class="vbar" style="background:#c9b06a;"></div><div class="hbar" style="width:1080px;background:#c9b06a;"></div>
+            <div class="children-row" style="gap:18px;">
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Milton</div><div class="sp">= Lia</div></div>
+                <div class="vbar"></div><div class="hbar" style="width:180px;"></div>
+                <div class="box-row">
+                  <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Adriana (Didi)</div><div class="sp">≠ Fred Wagner</div></div><div class="kids">Laura · Luísa · Júlia</div></div>
+                  <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Guilherme</div><div class="sp">= Ana Carolina</div></div><div class="kids">Benjamin · Annabelle</div></div>
                 </div>
               </div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Roberto</div><div class="sp">= Rosinha</div></div>
-                <div class="vbar"></div><div class="hbar" style="width:140px;"></div>
-                <div class="gc-row">
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Flávio</div><div class="sp">= Julieta</div></div><div class="kids">Manuela · Camila</div></div>
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Daniel</div></div><div class="kids">Eduardo</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Marlene</div><div class="sp">≠ Leo Krakowiak</div></div>
+                <div class="vbar"></div><div class="hbar" style="width:280px;"></div>
+                <div class="box-row">
+                  <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Ricardo</div><div class="sp">= Vanessa</div></div><div class="kids">Isabela · Daniela</div></div>
+                  <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Silvia</div><div class="sp">= Sérgio</div></div><div class="kids">André · Carolina</div></div>
+                  <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Cláudia</div><div class="sp">= Alberto</div></div><div class="kids">Mirela · Eduardo</div></div>
                 </div>
               </div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Doris</div><div class="sp">= Thomas</div></div>
-                <div class="vbar"></div><div class="hbar" style="width:200px;"></div>
-                <div class="gc-row">
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Fábio</div><div class="sp">= Alessandra</div></div><div class="kids">Fernando</div></div>
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Priscila</div><div class="sp">≠ Roberto</div></div><div class="kids">Rafaela · Valentina</div></div>
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Ricardo</div><div class="sp">= Paula</div></div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Mário</div><div class="sp">= Patrícia</div></div>
+                <div class="vbar"></div><div class="hbar" style="width:160px;"></div>
+                <div class="box-row">
+                  <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Bruno</div><div class="sp">= Magela</div></div><div class="kids">Ella</div></div>
+                  <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Alan</div><div class="sp">= Cash</div></div></div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Israel</div><div class="sp">†1962 · = Poli</div></div>
-            <div class="vbar"></div><div class="hbar" style="width:520px;"></div>
-            <div class="children-row" style="gap:14px;">
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Dorothy</div><div class="sp">= Samuel</div></div>
-                <div class="vbar"></div><div class="hbar" style="width:200px;"></div>
-                <div class="gc-row">
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Eduardo</div><div class="sp">= Débora</div></div><div class="kids">Gabriel · André</div></div>
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Cláudia</div><div class="sp">= Ernesto</div></div><div class="kids">Thomas · Fabiana · Daniela</div></div>
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Luciana</div><div class="sp">= Ilan</div></div><div class="kids">Yasmin · Isabela</div></div>
-                </div>
-              </div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Betty</div><div class="sp">= Benjamin</div></div>
-                <div class="vbar"></div><div class="hbar" style="width:140px;"></div>
-                <div class="gc-row">
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Daniel</div><div class="sp">= Simone</div></div><div class="kids">Rafael · Felipe</div></div>
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Silvia</div><div class="sp">= Fred</div></div><div class="kids">Jonathan · Maia · Gabriela</div></div>
-                </div>
-              </div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Efraim</div><div class="sp">= Marta</div></div>
-                <div class="vbar"></div><div class="hbar" style="width:140px;"></div>
-                <div class="gc-row">
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Mayra</div><div class="sp">= Richard</div></div><div class="kids">Sophie</div></div>
-                  <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Fábio</div><div class="sp">= Cláudia</div></div><div class="kids">Theo · Helena</div></div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="link"></div>
+          <div class="box" style="margin-top:8px;"><div class="nm">Sigmundo (Sig)</div><div class="sp">1923</div></div>
+          <div class="link"></div>
 
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Tobias</div><div class="sp">= Mariazinha G.</div></div><div class="kids">Cecília · Ruth · Silvia · Denise<br>(ver 2º casamento)</div></div>
-        </div>
-      </div>
-
-      <div class="band"><span>Quando as duas famílias viraram uma</span></div>
-      <div class="union">
-        <div class="tag">① Primeiro Casamento</div>
-        <div class="pair">Sigmundo Golombek <span class="heart">♥</span> Anna (Aninha) Safir</div>
-        <div class="note">Anna era filha de Sofia Zaclis</div>
-      </div>
-      <div class="gen-wrap">
-        <div class="vbar"></div><div class="hbar" style="width:1000px;"></div>
-        <div class="children-row" style="gap:50px;">
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Milton</div><div class="sp">= Lia</div></div>
-            <div class="vbar"></div><div class="hbar" style="width:240px;"></div>
+          <div class="marrow">
+            <div class="spouse"><div class="nm">Thelma</div><div class="sp">2º casamento</div></div>
+            <div class="vbar" style="background:#c9b06a;"></div><div class="hbar" style="width:240px;background:#c9b06a;"></div>
             <div class="children-row" style="gap:16px;">
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Adriana (Didi)</div><div class="sp">≠ Fred Wagner</div></div><div class="kids">Laura · Luísa · Júlia</div></div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Guilherme</div><div class="sp">= Ana Carolina</div></div><div class="kids">Benjamin · Annabelle</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Sérgio</div><div class="sp">= Zélia</div></div><div class="kids">Patrick</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Renata</div></div><div class="kids">Max (≠ Vitor) · Lis (= Cláudio)</div></div>
             </div>
           </div>
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Marlene</div><div class="sp">≠ Leo Krakowiak</div></div>
-            <div class="vbar"></div><div class="hbar" style="width:340px;"></div>
-            <div class="children-row" style="gap:14px;">
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Ricardo</div><div class="sp">= Vanessa</div></div><div class="kids">Isabela · Daniela</div></div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Silvia</div><div class="sp">= Sérgio</div></div><div class="kids">André · Carolina</div></div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Cláudia</div><div class="sp">= Alberto</div></div><div class="kids">Mirela · Eduardo</div></div>
-            </div>
-          </div>
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Mário</div><div class="sp">= Patrícia</div></div>
+        </div>
+      </div>
+
+      <div class="col"><div class="vbar"></div>
+        <div class="box"><div class="nm">Mariazinha</div><div class="sp">= Tobias Zaclis</div></div>
+        <div class="vbar"></div><div class="hbar" style="width:760px;"></div>
+        <div class="children-row" style="gap:18px;">
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Cecília</div><div class="sp">= Abram</div></div>
             <div class="vbar"></div><div class="hbar" style="width:200px;"></div>
-            <div class="children-row" style="gap:16px;">
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Bruno</div><div class="sp">= Magela</div></div><div class="kids">Ella</div></div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Alan</div><div class="sp">= Cash</div></div></div>
+            <div class="box-row">
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Cláudio</div><div class="sp">= Esther</div></div><div class="kids">Eduardo · Maurício · Daniela</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">André</div><div class="sp">= Carol</div></div><div class="kids">Cloé · Alec · Nuque · Gaia</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Carla</div><div class="sp">= Uri</div></div><div class="kids">Daniel · Joseph · Gabriela</div></div>
             </div>
+          </div>
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Ruth</div><div class="sp">= Nelson</div></div>
+            <div class="vbar"></div><div class="hbar" style="width:150px;"></div>
+            <div class="box-row">
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Fábio</div><div class="sp">= Melissa</div></div><div class="kids">Lara</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Eduardo</div><div class="sp">= Paula</div></div><div class="kids">Rafael · Daniel</div></div>
+            </div>
+          </div>
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Silvia</div><div class="sp">= Henrique</div></div>
+            <div class="vbar"></div>
+            <div class="box-row"><div class="col"><div class="vbar"></div><div class="box"><div class="nm">Renato</div><div class="sp">= Karina</div></div><div class="kids">Tom</div></div></div>
+          </div>
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Denise</div><div class="sp">= Cid</div></div>
+            <div class="vbar"></div>
+            <div class="box-row"><div class="col"><div class="vbar"></div><div class="box"><div class="nm">Julie</div></div></div></div>
           </div>
         </div>
       </div>
 
-      <div class="union" style="margin-top:48px;">
-        <div class="tag">② Segundo Casamento</div>
-        <div class="pair">Mariazinha Golombek <span class="heart">♥</span> Tobias Zaclis</div>
-        <div class="note">Mariazinha era irmã de Sigmundo · amigas de infância de Anna</div>
-      </div>
-      <div class="gen-wrap">
-        <div class="vbar"></div><div class="hbar" style="width:1100px;"></div>
-        <div class="children-row" style="gap:46px;">
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Cecília</div><div class="sp">= Abram</div></div>
-            <div class="vbar"></div><div class="hbar" style="width:340px;"></div>
-            <div class="children-row" style="gap:14px;">
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Cláudio</div><div class="sp">= Esther</div></div><div class="kids">Eduardo · Maurício · Daniela</div></div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">André</div><div class="sp">= Carol</div></div><div class="kids">Cloé · Alec · Nuque · Gaia</div></div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Carla</div><div class="sp">= Uri</div></div><div class="kids">Daniel · Joseph · Gabriela</div></div>
-            </div>
-          </div>
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Ruth</div><div class="sp">= Nelson</div></div>
-            <div class="vbar"></div><div class="hbar" style="width:240px;"></div>
-            <div class="children-row" style="gap:14px;">
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Fábio</div><div class="sp">= Melissa</div></div><div class="kids">Lara</div></div>
-              <div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Eduardo</div><div class="sp">= Paula</div></div><div class="kids">Rafael · Daniel</div></div>
-            </div>
-          </div>
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Silvia</div><div class="sp">= Henrique</div></div>
-            <div class="vbar"></div>
-            <div class="children-row"><div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Renato</div><div class="sp">= Karina</div></div><div class="kids">Tom</div></div></div>
-          </div>
-          <div class="col"><div class="vbar"></div><div class="node"><div class="nm">Denise</div><div class="sp">= Cid</div></div>
-            <div class="vbar"></div>
-            <div class="children-row"><div class="col"><div class="vbar"></div><div class="gc"><div class="nm">Julie</div></div></div></div>
-          </div>
+      <div class="col"><div class="vbar"></div>
+        <div class="box"><div class="nm">Rafael</div><div class="sp">= Anna Dobromil</div></div>
+        <div class="vbar"></div><div class="hbar" style="width:340px;"></div>
+        <div class="children-row" style="gap:16px;">
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Fábio</div><div class="sp">= Liz</div></div><div class="kids">Anna Cecilia · Sarah Sofia</div></div>
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Cláudio Henrique</div><div class="sp">≠ Mariana</div></div><div class="kids">Rebeca · Rodrigo</div></div>
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Vivian</div><div class="sp">≠ Joel</div></div><div class="kids">Arthur</div></div>
         </div>
-      </div>
-
-      <div class="footer">
-        <div class="mark">❦</div>
-        De duas origens, uma só família — para que netos e bisnetos conheçam de onde viemos.
       </div>
 
     </div>
   </div>
-</div>
 
+  <div class="band"><span>Os Zaclis · Bessarábia</span></div>
+  <div class="note-line">Anna (filha de Sofia) casou com Sigmundo · Tobias (caçula) casou com Mariazinha — vê-se a descendência no ramo Golombek acima</div>
+  <div class="gen-wrap">
+    <div class="clanhdr"><div class="node root"><div class="nm">Codish &amp; Haika</div><div class="sp">sapateiro · "Carlos &amp; Clara"</div></div></div>
+    <div class="origin">Teleneşti → Bom Retiro, São Paulo</div>
+    <div class="vbar"></div><div class="hbar" style="width:2050px;"></div>
+    <div class="children-row" style="gap:34px;align-items:flex-start;">
+
+      <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Sofia</div><div class="sp">1911–1992</div></div>
+        <div class="vbar"></div><div class="hbar" style="width:240px;"></div>
+        <div class="children-row" style="gap:14px;">
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Anna</div><div class="sp">= Sigmundo G.</div></div><div class="kids">Milton · Marlene · Mário<br>(ramo Golombek)</div></div>
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Martinico</div><div class="sp">= Flora</div></div><div class="kids">André Carlos · Sérgio Paulo · Flávio Roberto · Ana Lúcia (Xuxa)</div></div>
+        </div>
+      </div>
+
+      <div class="col"><div class="vbar"></div><div class="box"><div class="nm">José</div><div class="sp">1917–1983 · = Léa</div></div>
+        <div class="vbar"></div>
+        <div class="children-row"><div class="col"><div class="vbar"></div><div class="box"><div class="nm">Rubens</div></div><div class="kids">Lídia</div></div></div>
+      </div>
+
+      <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Waldemar</div><div class="sp">1918–2004 · = Idinha</div></div>
+        <div class="vbar"></div><div class="hbar" style="width:520px;"></div>
+        <div class="children-row" style="gap:14px;">
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Lionel</div><div class="sp">= Denise</div></div>
+            <div class="vbar"></div><div class="hbar" style="width:150px;"></div>
+            <div class="box-row">
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Cynthia</div><div class="sp">= Uri</div></div><div class="kids">Eduardo · Gustavo · Tamara</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Shelly</div><div class="sp">= Sérgio</div></div><div class="kids">Felipe · Camila</div></div>
+            </div>
+          </div>
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Roberto</div><div class="sp">= Rosinha</div></div>
+            <div class="vbar"></div><div class="hbar" style="width:140px;"></div>
+            <div class="box-row">
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Flávio</div><div class="sp">= Julieta</div></div><div class="kids">Manuela · Camila</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Daniel</div></div><div class="kids">Eduardo</div></div>
+            </div>
+          </div>
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Doris</div><div class="sp">= Thomas</div></div>
+            <div class="vbar"></div><div class="hbar" style="width:200px;"></div>
+            <div class="box-row">
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Fábio</div><div class="sp">= Alessandra</div></div><div class="kids">Fernando</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Priscila</div><div class="sp">≠ Roberto</div></div><div class="kids">Rafaela · Valentina</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Ricardo</div><div class="sp">= Paula</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Israel</div><div class="sp">†1962 · = Poli</div></div>
+        <div class="vbar"></div><div class="hbar" style="width:520px;"></div>
+        <div class="children-row" style="gap:14px;">
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Dorothy</div><div class="sp">= Samuel</div></div>
+            <div class="vbar"></div><div class="hbar" style="width:200px;"></div>
+            <div class="box-row">
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Eduardo</div><div class="sp">= Débora</div></div><div class="kids">Gabriel · André</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Cláudia</div><div class="sp">= Ernesto</div></div><div class="kids">Thomas · Fabiana · Daniela</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Luciana</div><div class="sp">= Ilan</div></div><div class="kids">Yasmin · Isabela</div></div>
+            </div>
+          </div>
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Betty</div><div class="sp">= Benjamin</div></div>
+            <div class="vbar"></div><div class="hbar" style="width:140px;"></div>
+            <div class="box-row">
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Daniel</div><div class="sp">= Simone</div></div><div class="kids">Rafael · Felipe</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Silvia</div><div class="sp">= Fred</div></div><div class="kids">Jonathan · Maia · Gabriela</div></div>
+            </div>
+          </div>
+          <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Efraim</div><div class="sp">= Marta</div></div>
+            <div class="vbar"></div><div class="hbar" style="width:140px;"></div>
+            <div class="box-row">
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Mayra</div><div class="sp">= Richard</div></div><div class="kids">Sophie</div></div>
+              <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Fábio</div><div class="sp">= Cláudia</div></div><div class="kids">Theo · Helena</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col"><div class="vbar"></div><div class="box"><div class="nm">Tobias</div><div class="sp">= Mariazinha G.</div></div><div class="kids">Cecília · Ruth · Silvia · Denise<br>(ramo Golombek)</div></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="mark">&#10086;</div>
+    De duas origens, uma só família — para que netos e bisnetos conheçam de onde viemos.
+  </div>
+
+</div></div></div>
 <script>
 (function(){
-  const stage=document.getElementById('stage');
-  const canvas=document.getElementById('canvas');
-  const sheet=document.getElementById('sheet');
-  let scale=1, tx=0, ty=0;
-  const MIN=0.15, MAX=4;
-
-  function apply(){ canvas.style.transform=`translate(${tx}px,${ty}px) scale(${scale})`; }
-
-  function fit(){
-    const sw=sheet.offsetWidth, sh=sheet.offsetHeight;
-    const vw=window.innerWidth, vh=window.innerHeight;
-    const s=Math.min(vw/sw, vh/sh)*0.96;
-    scale=s;
-    tx=(vw - sw*s)/2;
-    ty=(vh - sh*s)/2;
-    apply();
-  }
-
-  // wheel / trackpad zoom toward cursor
-  stage.addEventListener('wheel',function(e){
-    e.preventDefault();
-    const rect=stage.getBoundingClientRect();
-    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
-    const delta=-e.deltaY*0.0015;
-    const ns=Math.min(MAX,Math.max(MIN, scale*(1+delta)));
-    // zoom around cursor
-    tx = mx - (mx - tx)*(ns/scale);
-    ty = my - (my - ty)*(ns/scale);
-    scale=ns; apply();
-  },{passive:false});
-
-  // drag to pan
-  let dragging=false,lx=0,ly=0;
-  stage.addEventListener('pointerdown',function(e){dragging=true;lx=e.clientX;ly=e.clientY;stage.classList.add('grabbing');stage.setPointerCapture(e.pointerId);});
-  stage.addEventListener('pointermove',function(e){if(!dragging)return;tx+=e.clientX-lx;ty+=e.clientY-ly;lx=e.clientX;ly=e.clientY;apply();});
-  stage.addEventListener('pointerup',function(e){dragging=false;stage.classList.remove('grabbing');});
-  stage.addEventListener('pointercancel',function(){dragging=false;stage.classList.remove('grabbing');});
-
-  // pinch (two-finger) on touch
-  let pts=new Map(),pd=0,pcx=0,pcy=0;
-  stage.addEventListener('pointerdown',e=>pts.set(e.pointerId,e));
-  stage.addEventListener('pointermove',e=>{
-    if(!pts.has(e.pointerId))return; pts.set(e.pointerId,e);
-    if(pts.size===2){
-      const [a,b]=[...pts.values()];
-      const d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
-      const cx=(a.clientX+b.clientX)/2, cy=(a.clientY+b.clientY)/2;
-      if(pd){
-        const ns=Math.min(MAX,Math.max(MIN,scale*(d/pd)));
-        tx=cx-(cx-tx)*(ns/scale); ty=cy-(cy-ty)*(ns/scale); scale=ns; apply();
-      }
-      pd=d;pcx=cx;pcy=cy;dragging=false;
-    }
-  });
-  stage.addEventListener('pointerup',e=>{pts.delete(e.pointerId);if(pts.size<2)pd=0;});
-
-  // buttons
-  function zoomBy(f){
-    const cx=window.innerWidth/2, cy=window.innerHeight/2;
-    const ns=Math.min(MAX,Math.max(MIN,scale*f));
-    tx=cx-(cx-tx)*(ns/scale); ty=cy-(cy-ty)*(ns/scale); scale=ns; apply();
-  }
-  document.getElementById('zin').onclick=()=>zoomBy(1.25);
-  document.getElementById('zout').onclick=()=>zoomBy(0.8);
+  const stage=document.getElementById('stage'),canvas=document.getElementById('canvas'),sheet=document.getElementById('sheet');
+  let scale=1,tx=0,ty=0;const MIN=0.08,MAX=4;
+  function apply(){canvas.style.transform='translate('+tx+'px,'+ty+'px) scale('+scale+')';}
+  function fit(){const sw=sheet.offsetWidth,sh=sheet.offsetHeight,vw=innerWidth,vh=innerHeight;const s=Math.min(vw/sw,vh/sh)*0.96;scale=s;tx=(vw-sw*s)/2;ty=(vh-sh*s)/2;apply();}
+  stage.addEventListener('wheel',function(e){e.preventDefault();const r=stage.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;const ns=Math.min(MAX,Math.max(MIN,scale*(1-e.deltaY*0.0015)));tx=mx-(mx-tx)*(ns/scale);ty=my-(my-ty)*(ns/scale);scale=ns;apply();},{passive:false});
+  let dragging=false,lx=0,ly=0,pts=new Map(),pd=0;
+  stage.addEventListener('pointerdown',function(e){pts.set(e.pointerId,e);dragging=true;lx=e.clientX;ly=e.clientY;stage.classList.add('grabbing');stage.setPointerCapture(e.pointerId);});
+  stage.addEventListener('pointermove',function(e){if(pts.has(e.pointerId))pts.set(e.pointerId,e);
+    if(pts.size===2){const a=[...pts.values()][0],b=[...pts.values()][1];const d=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);const cx=(a.clientX+b.clientX)/2,cy=(a.clientY+b.clientY)/2;if(pd){const ns=Math.min(MAX,Math.max(MIN,scale*(d/pd)));tx=cx-(cx-tx)*(ns/scale);ty=cy-(cy-ty)*(ns/scale);scale=ns;apply();}pd=d;dragging=false;return;}
+    if(!dragging)return;tx+=e.clientX-lx;ty+=e.clientY-ly;lx=e.clientX;ly=e.clientY;apply();});
+  stage.addEventListener('pointerup',function(e){pts.delete(e.pointerId);if(pts.size<2)pd=0;dragging=false;stage.classList.remove('grabbing');});
+  document.getElementById('zin').onclick=function(){const cx=innerWidth/2,cy=innerHeight/2,ns=Math.min(MAX,scale*1.25);tx=cx-(cx-tx)*(ns/scale);ty=cy-(cy-ty)*(ns/scale);scale=ns;apply();};
+  document.getElementById('zout').onclick=function(){const cx=innerWidth/2,cy=innerHeight/2,ns=Math.max(MIN,scale*0.8);tx=cx-(cx-tx)*(ns/scale);ty=cy-(cy-ty)*(ns/scale);scale=ns;apply();};
   document.getElementById('reset').onclick=fit;
-
-  window.addEventListener('resize',fit);
-  // initial fit after fonts load
-  window.addEventListener('load',()=>setTimeout(fit,300));
-  fit();
-
-  // fade hint
-  setTimeout(()=>document.getElementById('hint').classList.add('fade'),4000);
+  addEventListener('resize',fit);addEventListener('load',function(){setTimeout(fit,300);});fit();
+  setTimeout(function(){document.getElementById('hint').classList.add('fade');},4000);
 })();
 </script>
 </body>
